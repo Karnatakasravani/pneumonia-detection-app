@@ -79,19 +79,19 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image_dataset_from_directory
 
 train_data = image_dataset_from_directory(
-    "C:/Users/DELL/Desktop/chest_xray/train",
+    "chest_xray/train",
     image_size=(150,150),
     batch_size=32
 )
 
 val_data = image_dataset_from_directory(
-    "C:/Users/DELL/Desktop/chest_xray/val",
+    "chest_xray/val",
     image_size=(150,150),
     batch_size=32
 )
 
 test_data = image_dataset_from_directory(
-    "C:/Users/DELL/Desktop/chest_xray/test",
+    "chest_xray/test",
     image_size=(150,150),
     batch_size=32
 )
