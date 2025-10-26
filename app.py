@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -445,31 +446,56 @@ model = load_model('pneumonia_model.keras')  # or 'pneumonia_model.h5'
 
 
 import streamlit as st
+import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import numpy as np
 from PIL import Image
 
-st.title("🩺 Pneumonia Detection from Chest X-ray")
-st.write("Upload a chest X-ray image and let the model predict whether it’s Pneumonia or Normal.")
+# -----------------------------
+# Load the trained model
+# -----------------------------
+model = tf.keras.models.load_model("pneumonia_model.keras")
 
-uploaded_file = st.file_uploader("Choose an X-ray image...", type=["jpg", "jpeg", "png"])
+# -----------------------------
+# Streamlit page setup
+# -----------------------------
+st.set_page_config(page_title="Pneumonia Detection App", page_icon="🫁", layout="centered")
+st.title("🩺 Pneumonia Detection from Chest X-rays")
+st.write("Upload a chest X-ray image, and the model will predict whether it's **Normal** or **Pneumonia**.")
+
+# -----------------------------
+# Upload image section
+# -----------------------------
+uploaded_file = st.file_uploader("Choose a chest X-ray image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
+    # Display the uploaded image
     img = Image.open(uploaded_file)
-    st.image(img, caption='Uploaded X-ray', use_column_width=True)
+    st.image(img, caption="Uploaded Image", use_container_width=True)
 
+    # Preprocess the image
     img = img.resize((150, 150))
-    img_array = np.array(img) / 255.0
+    img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
+    img_array = img_array / 255.0  # normalization
 
+    # Make prediction
     prediction = model.predict(img_array)
-    result = "Pneumonia" if prediction[0][0] > 0.5 else "Normal"
+    predicted_class = "Pneumonia" if prediction[0][0] > 0.5 else "Normal"
+    confidence = prediction[0][0] if prediction[0][0] > 0.5 else (1 - prediction[0][0])
 
-    st.success(f"Prediction: {result}")
+    # Display result
+    st.markdown("---")
+    st.subheader("🧠 Prediction Result")
+    st.write(f"**Predicted Class:** {predicted_class}")
+    st.write(f"**Confidence:** {confidence:.2%}")
 
+    # Add message based on prediction
+    if predicted_class == "Pneumonia":
+        st.error("⚠️ The model predicts this X-ray shows signs of pneumonia. Please consult a doctor.")
+    else:
+        st.success("✅ The model predicts this X-ray is normal.")
 
-# In[ ]:
-
-
-
-
+# Footer
+st.markdown("---")
+st.caption("Developed by Sravani Karnataka | Pneumonia Detection App using Deep Learning 🫁")
