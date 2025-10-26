@@ -22,9 +22,9 @@ from tensorflow.keras.preprocessing import image
 # In[5]:
 
 
-train_dir = "C:/Users/DELL/Desktop/chest_xray/train"
-val_dir   = "C:/Users/DELL/Desktop/chest_xray/val"
-test_dir  = "C:/Users/DELL/Desktop/chest_xray/test"
+train_dir = "chest_xray/train"
+val_dir   = "chest_xray/val"
+test_dir  = "chest_xray/test"
 
 
 # In[7]:
