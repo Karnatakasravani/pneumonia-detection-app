@@ -2,3 +2,7 @@ streamlit
 tensorflow
 numpy
 pillow
+matplotlib
+pandas
+scikit-learn
+torch
